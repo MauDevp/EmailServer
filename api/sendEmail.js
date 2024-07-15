@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Ruta para manejar el envío de formularios
-app.post('/send-email', (req, res) => {
+app.post('/sendEmail', (req, res) => {
     const { toEmail, subject, message } = req.body;
 
     const mailOptions = {
