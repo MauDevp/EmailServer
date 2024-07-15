@@ -1,4 +1,11 @@
+const express = require('express');
 const nodemailer = require('nodemailer');
+const bodyParser = require('body-parser');
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.use(bodyParser.json());
 
 // Configuración de Nodemailer para Zoho Mail
 const transporter = nodemailer.createTransport({
@@ -9,25 +16,27 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-module.exports = async (req, res) => {
-    if (req.method !== 'POST') {
-        return res.status(405).send('Method Not Allowed');
-    }
-
+// Ruta para manejar el envío de formularios
+app.post('/send-email', (req, res) => {
     const { toEmail, subject, message } = req.body;
 
     const mailOptions = {
-        from: 'mauricio@maudevp.tech',
+        from: process.env.EMAIL_USER,  // Usar la variable de entorno aquí también
         to: toEmail,
         subject: subject,
         text: message
     };
 
-    try {
-        await transporter.sendMail(mailOptions);
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Error al enviar el correo:', error);
+            return res.status(500).send('Error al enviar el correo.');
+        }
+        console.log('Correo enviado:', info.response);
         res.status(200).send('Correo enviado correctamente.');
-    } catch (error) {
-        console.error('Error al enviar el correo:', error);
-        res.status(500).send('Error al enviar el correo.');
-    }
-};
+    });
+});
+
+app.listen(port, () => {
+    console.log(`Servidor corriendo en http://localhost:${port}`);
+});
