@@ -1,10 +1,8 @@
-const express = require('express');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
+const express = require('express');
 
 const app = express();
-const port = process.env.PORT || 3000;
-
 app.use(bodyParser.json());
 
 // Configuración de Nodemailer para Zoho Mail
@@ -17,11 +15,11 @@ const transporter = nodemailer.createTransport({
 });
 
 // Ruta para manejar el envío de formularios
-app.post('/sendEmail', (req, res) => {
+app.post('/api/sendEmail', (req, res) => { // Ajuste en la ruta
     const { toEmail, subject, message } = req.body;
 
     const mailOptions = {
-        from: process.env.EMAIL_USER,  // Usar la variable de entorno aquí también
+        from: process.env.EMAIL_USER,
         to: toEmail,
         subject: subject,
         text: message
@@ -37,6 +35,4 @@ app.post('/sendEmail', (req, res) => {
     });
 });
 
-app.listen(port, () => {
-    console.log(`Servidor corriendo en http://localhost:${port}`);
-});
+module.exports = app;
