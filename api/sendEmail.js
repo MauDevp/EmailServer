@@ -26,7 +26,7 @@ app.post('/api/sendEmail', (req, res) => {
         from: process.env.EMAIL_USER,
         to: toEmail,
         subject: subject,
-        text: message
+        html: message
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
