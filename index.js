@@ -7,9 +7,9 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
-// Configuración de Nodemailer para Zoho Mail
+// Configuración de Nodemailer para Gmail
 const transporter = nodemailer.createTransport({
-    service: 'Zoho',
+    service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
@@ -21,7 +21,7 @@ app.post('/send-email', (req, res) => {
     const { toEmail, subject, message } = req.body;
 
     const mailOptions = {
-        from: 'mauricio@maudevp.tech',
+        from: process.env.EMAIL_USER,
         to: toEmail,
         subject: subject,
         text: message

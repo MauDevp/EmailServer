@@ -9,9 +9,11 @@ const port = process.env.PORT || 3000;
 app.use(cors()); // Permitir todas las solicitudes CORS
 app.use(bodyParser.json());
 
-// Configuración de Nodemailer para Zoho Mail
+// Configuración de Nodemailer para Gmail SMTP
 const transporter = nodemailer.createTransport({
-    service: 'Zoho',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
